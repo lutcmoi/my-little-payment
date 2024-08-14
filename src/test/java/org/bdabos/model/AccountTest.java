@@ -79,18 +79,20 @@ class AccountTest {
     @RepeatedTest(1000)
     @DisplayName("Concurrent deposit and withdraw")
     void concurrentDepositWithdrawTest() throws InterruptedException {
-        account = Account.builder().balance(BigDecimal.ZERO).build();
+        account = Account.builder().balance(BigDecimal.valueOf(5000)).build();
 
         ExecutorService executor = Executors.newCachedThreadPool();
         for (int i = 0; i < 100; i++) {
             executor.execute(() -> {
                 account.deposit(BigDecimal.valueOf(100));
+            });
+            executor.execute(() -> {
                 account.withdraw(BigDecimal.valueOf(50));
             });
         }
 
         executor.shutdown();
         executor.awaitTermination(1, TimeUnit.MINUTES);
-        assertEquals(BigDecimal.valueOf(5000), account.getBalance());
+        assertEquals(BigDecimal.valueOf(10000), account.getBalance());
     }
 }
