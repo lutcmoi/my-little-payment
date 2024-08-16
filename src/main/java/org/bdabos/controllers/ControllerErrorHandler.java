@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
+import org.springframework.web.util.BindErrorUtils;
 
 @Slf4j
 @RestControllerAdvice
@@ -18,7 +20,8 @@ public class ControllerErrorHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleException(MethodArgumentNotValidException e) {
         log.warn("Impossible to handle request", e);
-        return ResponseEntity.badRequest().body("Invalid request: from, to and amount are required");
+        String sb = "Invalid request: \n" + BindErrorUtils.resolveAndJoin(e.getFieldErrors());
+        return ResponseEntity.badRequest().body(sb);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
@@ -43,6 +46,11 @@ public class ControllerErrorHandler {
     public ResponseEntity<String> handleException(ExchangeRateUnavailableException e) {
         log.warn("Exchange rate unavailable", e);
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<String> handleException(NoResourceFoundException e) {
+        return ResponseEntity.notFound().build();
     }
 
     @ExceptionHandler(Exception.class)
