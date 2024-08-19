@@ -7,6 +7,7 @@ import org.bdabos.model.Account;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class AccountService {
                 .id(accountsById.size() + 1)
                 .ownerId(ownerId)
                 .currency(currency)
-                .balance(BigDecimal.valueOf(balance))
+                .balance(BigDecimal.valueOf(balance).setScale(2, RoundingMode.HALF_UP))
                 .build();
 
         ownerAccountIds.add(account.getId());
