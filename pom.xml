@@ -12,12 +12,14 @@
 
   <groupId>org.bdabos</groupId>
   <artifactId>mylittlepayment</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
 
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <mockwebserver.version>4.12.0</mockwebserver.version>
   </properties>
 
   <dependencies>
@@ -63,7 +65,7 @@
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>mockwebserver</artifactId>
-      <version>4.12.0</version>
+      <version>${mockwebserver.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

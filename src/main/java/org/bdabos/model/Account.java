@@ -12,8 +12,12 @@ import java.math.BigDecimal;
 public class Account {
     private long id;
     private long ownerId;
-    private String currency;
-    private volatile BigDecimal balance;
+
+    @Builder.Default
+    private String currency = "EUR";
+
+    @Builder.Default
+    private volatile BigDecimal balance = new BigDecimal(0);
 
     @Synchronized
     public void deposit(BigDecimal amount) {

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -38,7 +39,7 @@ class TransferServiceTest {
         when(exchangeService.getFinalAmount(any(Account.class), any(Account.class), any(BigDecimal.class))).thenReturn(BigDecimal.valueOf(150));
 
         transferService.accountsTransfer(1, 2, BigDecimal.valueOf(100));
-        verify(from).withdraw(BigDecimal.valueOf(100));
-        verify(to).deposit(BigDecimal.valueOf(150));
+        verify(from).withdraw(BigDecimal.valueOf(100).setScale(2, RoundingMode.HALF_UP));
+        verify(to).deposit(BigDecimal.valueOf(150).setScale(2, RoundingMode.HALF_UP));
     }
 }

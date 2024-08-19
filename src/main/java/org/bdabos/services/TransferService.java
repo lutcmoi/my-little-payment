@@ -6,6 +6,7 @@ import org.bdabos.model.Account;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Slf4j
 @Service
@@ -28,8 +29,8 @@ public class TransferService {
         // Get the amount in the currency of the destination account
         BigDecimal finalAmount = exchangeService.getFinalAmount(from, to, amount);
 
-        from.withdraw(amount);
-        to.deposit(finalAmount);
+        from.withdraw(amount.setScale(2, RoundingMode.HALF_UP));
+        to.deposit(finalAmount.setScale(2, RoundingMode.HALF_UP));
 
         log.info("Transfer done");
     }
